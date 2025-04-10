@@ -1,7 +1,26 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+// src/dinos/dto/create-dino.input.ts
+import { InputType, Field, Float } from '@nestjs/graphql';
 
 @InputType()
 export class CreateDinoInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field()
+  nome: string;
+
+  @Field()
+  periodo: string;
+
+  @Field()
+  dieta: string;
+
+  @Field(() => Float)
+  comprimento: number;
+
+  @Field(() => Float)
+  peso: number;
+
+  @Field({ nullable: true })
+  descricao?: string;
+
+  @Field({ nullable: true })
+  imagemUrl?: string;
 }
