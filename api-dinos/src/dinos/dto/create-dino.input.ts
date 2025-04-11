@@ -1,4 +1,3 @@
-// src/dinos/dto/create-dino.input.ts
 import { InputType, Field, Float } from '@nestjs/graphql';
 
 @InputType()

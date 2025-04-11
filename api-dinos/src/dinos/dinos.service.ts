@@ -4,6 +4,8 @@ import { Model } from 'mongoose';
 import { Dino, DinoDocument } from './entities/dino.entity';
 import { CreateDinoInput } from './dto/create-dino.input';
 import { UpdateDinoInput } from './dto/update-dino.input';
+import { FilterDinoInput } from './dto/filter-dino.input';
+import { PaginationInput } from './dto/pagination.input';
 
 @Injectable()
 export class DinosService {
@@ -16,8 +18,21 @@ export class DinosService {
     return createdDino.save();
   }
 
-  async findAll(): Promise<Dino[]> {
-    return this.dinoModel.find().exec();
+  async findAll(
+    filter?: FilterDinoInput,
+    pagination?: PaginationInput,
+  ): Promise<Dino[]> {
+    const query = {};
+
+    if (filter?.nome) query['nome'] = new RegExp(filter.nome, 'i');
+    if (filter?.periodo) query['periodo'] = filter.periodo;
+    if (filter?.dieta) query['dieta'] = filter.dieta;
+
+    const page = pagination?.page || 1;
+    const limit = pagination?.limit || 10;
+    const skip = (page - 1) * limit;
+
+    return this.dinoModel.find(query).skip(skip).limit(limit).exec();
   }
 
   async findOne(id: string): Promise<Dino> {
