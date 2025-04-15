@@ -1,8 +1,8 @@
-// src/app/page.tsx
-
 "use client";
 
 import { gql, useQuery } from "@apollo/client";
+import { DinoCard } from "@/components/DinoCard";
+import { Dino } from "@/types/Dino";
 
 const GET_DINOS = gql`
   query GetDinos($filter: FilterDinoInput, $pagination: PaginationInput) {
@@ -22,8 +22,8 @@ const GET_DINOS = gql`
 export default function Home() {
   const { loading, error, data } = useQuery(GET_DINOS, {
     variables: {
-      filter: {}, // Se não houver filtro, passe um objeto vazio
-      pagination: { page: 1, limit: 10 }, // Defina os parâmetros de paginação
+      filter: {},
+      pagination: { page: 1, limit: 10 },
     },
   });
 
@@ -34,13 +34,8 @@ export default function Home() {
     <main className="p-6">
       <h1 className="text-3xl font-bold mb-4">🦖 Lista de Dinossauros</h1>
       <ul className="space-y-2">
-        {data.dinos.map((dino: any) => (
-          <li
-            key={dino._id}
-            className="bg-white text-black px-4 py-2 rounded shadow"
-          >
-            <strong>{dino.nome}</strong> - {dino.periodo} {dino.dieta} {dino.comprimento} {dino.peso} {dino.descricao}
-          </li>
+        {data.dinos.map((dino: Dino) => (
+          <DinoCard key={dino._id} dino={dino} />
         ))}
       </ul>
     </main>
